@@ -1,0 +1,2 @@
+Goal of project,
+Based off people who do have diabetes or a 1 in the Diabetes Binary column see if the people who do not have diabetes have similar matching traits.
