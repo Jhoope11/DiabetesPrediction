@@ -8,8 +8,18 @@
         <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
     </head>
 <body>
-    <py-config src="./pyscript.toml"></py-config>
-    <py-script src="./main.py"></py-script>
+    <py-config>
+        "packages" = ["numpy","pandas","jinja2"]
+        [[fetch]]
+        from = 'https://raw.githubusercontent.com/Jhoope11/DiabetesPrediction/PythonExaming/Type12.csv'
+    </py-config>
+    <py-script src="./main.py">
+        import pandas as pd
+        df = pd.read_csv('Type12.csv')
+        Element("pandas-output").e;ement.style.display = "block"
+        display (df.head().style.format(precision=2), target="pandas-output-inner", append="False")
+    </py-script>
+
     <h2>Boolean Entries</h2>
     <form>
         <!-- Boolean Entries (Checkboxes) -->
