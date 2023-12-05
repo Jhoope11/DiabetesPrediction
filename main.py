@@ -8,7 +8,7 @@ with open('Type12.csv') as csvFile:
     PercentType0 = 0
     for row in csvReader:
         if lineCount == 0:
-            print(f'Col names are{",".join(row)}')
+            print(f'Col names are{",".join(row)} {row}')
             lineCount+=1
         else:
             y = float(row[0])
