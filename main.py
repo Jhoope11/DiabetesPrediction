@@ -3,6 +3,27 @@ import math
 from pyscript import document
 
 def performCalc(event):
+    HighBP = document.querySelector("#HighBP")
+    HighChol = document.querySelector("#HighChol")
+    CholCheck = document.querySelector("#")
+    smoke = document.querySelector("#Smoke")
+    stroke = document.querySelector("#Stroke")
+    heartIssue = document.querySelector("#HeartDiseaseOrAttack")
+    physAct = document.querySelector("#PhysAct")
+    fruit = document.querySelector("#Fruit")
+    veg = document.querySelector("#Veg")
+    hvyDrinker = document.querySelector("#HvyAlcCons")
+    healthCare = document.querySelector("#Healthcare")
+    noDocCost = document.querySelector("#NoDocCost")
+    diffWalk = document.querySelector("#DiffWalk")
+    bmi = document.querySelector("#BMI")
+    genHealth = document.querySelector("#genHealth")
+    mentalHealth = document.querySelector("#mentalHealth")
+    physHealth = document.querySelector("#physHealth")
+    gender = document.querySelector("#gender")
+    age = document.querySelector("#age")
+    eduLevel = document.querySelector("#eduLevel")
+    income = document.querySelector("#income")
     with open('./Type12.csv') as csvFile:
         csvReader= csv.reader(csvFile,delimiter=',')
         lineCount=0
@@ -28,6 +49,7 @@ def performCalc(event):
         PercentType1 = PercentType1 / x * 100
         PercentType2 = PercentType2 / x * 100
         print(f'processed {lineCount} lines. \n{PercentType0} are not diabetic. \n{PercentType1} Have are type 1 \n{PercentType2} Have are type 2')
-        
+        outputDiv= document.querySelector("#output")
+        outputDiv.innerText = 'processed {lineCount} lines. \n{PercentType0} are not diabetic. \n{PercentType1} Have are type 1 \n{PercentType2} Have are type 2'
 ######################################MAIN#######################################
 #performCalc()

@@ -4,32 +4,30 @@
         <title>Diabetes Prediction</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <link rel="stylesheet" href="https://pyscript.net/releases/2023.05.1/pyscript.css" />
-        <script defer src="https://pyscript.net/releases/2023.05.1/pyscript.js"></script>
+        <link rel="stylesheet" href="https://pyscript.net/snapshots/2023.09.1.RC2/core.css">
+        <script type="module" src="https://pyscript.net/snapshots/2023.09.1.RC2/core.js"></script>
+        <script type="py" src="main.py" config="pyscript.toml"></script>
     </head>
 <body>
-    <py-config src = "pyscript.TOML">
-        
-    </py-config>
-    <py-script src='main.py'>
-    </py-script>
+    <py-config src = "pyscript.toml"></py-config>
+    <py-script src='main.py'></py-script>
 
     <h2>Please Check the box if the answer is Yes or True.</h2>
     <form>
         <!-- Boolean Entries (Checkboxes) -->
-        <label>Do you have a high blood pressure? <input type="checkbox" name="HighBP"></label><br>
-        <label>Do you have a high cholesterol?<input type="checkbox" name="HighChol"></label><br>
-        <label>Have you had a cholesterol check in the past 5 years?<input type="checkbox" name="CholCheck"> </label><br>
-        <label>Have you smoked at least 100 cigarettes in your entire life?<input type="checkbox" name="Smoke"></label><br>
-        <label>Have you ever had a stroke?<input type="checkbox" name="Stroke"></label><br>
-        <label>Do you have/had Coronary Heart Disease (CHD) or Myocardial Infarction (MI)<input type="checkbox" name="HeartDiseaseOrAttack"></label><br>
-        <label>Physical activity in past 30 days - not including job<input type="checkbox" name="PhysAct"></label><br>
-        <label>Consume 1 or more fruit(s) a day<input type="checkbox" name="Fruit"></label><br>
-        <label>Consume 1 or more Vegetable(s) a day?<input type="checkbox" name="Veg"> </label><br>
-        <label>Are you a heavy drinker? (adult men having more than 14 drinks per week and adult women having more than 7 drinks per week)<input type="checkbox" name="HvyAlcCons"> </label><br>
-        <label>Do you have any kind of health care coverage, including health insurance, prepaid plans such as HMO, etc.<input type="checkbox" name="Healthcare"></label><br>
-        <label>Was there a time in the past 12 months when you needed to see a doctor but could not because of cost?<input type="checkbox" name="NoDocCost"></label><br>
-        <label>Do you have serious difficulty walking or climbing stairs?<input type="checkbox" name="DiffWalk"></label><br>
+        <label>Do you have a high blood pressure? <input type="checkbox" name="HighBP" id="HighBP"></label><br>
+        <label>Do you have a high cholesterol?<input type="checkbox" name="HighChol" id="HighChol"></label><br>
+        <label>Have you had a cholesterol check in the past 5 years?<input type="checkbox" id="CholCheck"> </label><br>
+        <label>Have you smoked at least 100 cigarettes in your entire life?<input type="checkbox" id="Smoke"></label><br>
+        <label>Have you ever had a stroke?<input type="checkbox" id="Stroke"></label><br>
+        <label>Do you have/had Coronary Heart Disease (CHD) or Myocardial Infarction (MI)<input type="checkbox" id="HeartDiseaseOrAttack"></label><br>
+        <label>Physical activity in past 30 days - not including job<input type="checkbox" id="PhysAct"></label><br>
+        <label>Consume 1 or more fruit(s) a day<input type="checkbox" id="Fruit"></label><br>
+        <label>Consume 1 or more Vegetable(s) a day?<input type="checkbox" id="Veg"> </label><br>
+        <label>Are you a heavy drinker? (adult men having more than 14 drinks per week and adult women having more than 7 drinks per week)<input type="checkbox" id="HvyAlcCons"> </label><br>
+        <label>Do you have any kind of health care coverage, including health insurance, prepaid plans such as HMO, etc.<input type="checkbox" id="Healthcare"></label><br>
+        <label>Was there a time in the past 12 months when you needed to see a doctor but could not because of cost?<input type="checkbox" id="NoDocCost"></label><br>
+        <label>Do you have serious difficulty walking or climbing stairs?<input type="checkbox" id="DiffWalk"></label><br>
 
         <!-- Text Input Fields -->
         <h2>Text Input Fields</h2>
@@ -46,7 +44,9 @@
 
         <!-- Submit Button -->
         <button py-click="EnterInfo">Enter Info</button>
-        <script type="py" src="./main.py" config="./pyscript.TMOL"></script>
+
+        <div id="output"></div>
+        <script type="py" src="./main.py" config="pyscript.TMOL"></script>
     </form>
 
 </body>
