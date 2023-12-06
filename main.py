@@ -5,7 +5,7 @@ from pyscript import document
 def performCalc(event):
     HighBP = document.querySelector("#HighBP")
     HighChol = document.querySelector("#HighChol")
-    CholCheck = document.querySelector("#")
+    CholCheck = document.querySelector("#CholCheck")
     smoke = document.querySelector("#Smoke")
     stroke = document.querySelector("#Stroke")
     heartIssue = document.querySelector("#HeartDiseaseOrAttack")
@@ -24,6 +24,7 @@ def performCalc(event):
     age = document.querySelector("#age")
     eduLevel = document.querySelector("#eduLevel")
     income = document.querySelector("#income")
+    csvFile = open('./Type12.csv')
     with open('./Type12.csv') as csvFile:
         csvReader= csv.reader(csvFile,delimiter=',')
         lineCount=0
