@@ -1,5 +1,6 @@
 import csv
 import math
+from pyscript import document
 
 def performCalc(event):
     with open('./Type12.csv') as csvFile:
