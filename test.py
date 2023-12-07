@@ -14,7 +14,7 @@ def performCalc():
     veg = 0
     hvyDrinker = 0
     healthCare = 1
-    noDocCost = 0
+    noDocBcCost = 0
     diffWalk = 0
     bmi = 12
     genHealth = 1
@@ -24,6 +24,7 @@ def performCalc():
     age = 20
     eduLevel = 5
     income = 1
+    EnteredInfo = [HighBP, HighChol, CholCheck, bmi, smoke, stroke, heartIssue, physAct, fruit, veg, hvyDrinker, healthCare, noDocBcCost, genHealth, mentalHealth, physHealth, diffWalk, gender, age, eduLevel, income]
     csvFile = open('./Type12.csv')
     with open('./Type12.csv') as csvFile:
         csvReader= csv.reader(csvFile,delimiter=',')
@@ -31,6 +32,7 @@ def performCalc():
         PercentType1 = 0
         PercentType2 = 0
         PercentType0 = 0
+        matchedRow = 0
         for row in csvReader:
             if lineCount == 0:
                 print(f'Col names are {", ".join(row)} ')
@@ -44,6 +46,12 @@ def performCalc():
                 else:
                     PercentType0 += 1
                 lineCount +=1
+                rowInfo = [row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19], row[20], row[21]]
+                #print(rowInfo)
+        if {[i for i, j in zip(EnteredInfo, rowInfo) if i == j]}:
+            matchedRow += 1
+        print(f'{[i for i, j in zip(EnteredInfo, rowInfo) if i == j]}')
+            
         x = lineCount - 1
         print(f'{PercentType0} Are not diabetic \n{PercentType1} Have Type 1 \n{PercentType2} Have Type 2')
         PercentType0 = PercentType0 / x * 100
