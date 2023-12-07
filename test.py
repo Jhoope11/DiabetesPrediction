@@ -3,7 +3,27 @@ import math
 #from pyscript import document
 
 def performCalc():
-    
+    HighBP = 1
+    HighChol = 1
+    CholCheck = 1
+    smoke = 1
+    stroke = 1
+    heartIssue = 0
+    physAct = 1
+    fruit = 0
+    veg = 0
+    hvyDrinker = 0
+    healthCare = 1
+    noDocCost = 0
+    diffWalk = 0
+    bmi = 12
+    genHealth = 1
+    mentalHealth = 1
+    physHealth = 1
+    gender = 1
+    age = 20
+    eduLevel = 5
+    income = 1
     csvFile = open('./Type12.csv')
     with open('./Type12.csv') as csvFile:
         csvReader= csv.reader(csvFile,delimiter=',')

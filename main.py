@@ -2,7 +2,7 @@ import csv
 import math
 from pyscript import document
 
-def performCalc():
+def performCalc(event):
     HighBP = document.querySelector("#HighBP")
     HighChol = document.querySelector("#HighChol")
     CholCheck = document.querySelector("#CholCheck")
@@ -53,4 +53,4 @@ def performCalc():
         outputDiv= document.querySelector("#output")
         outputDiv.innerText = 'processed {lineCount} lines. \n{PercentType0} are not diabetic. \n{PercentType1} Have are type 1 \n{PercentType2} Have are type 2'
 ######################################MAIN#######################################
-performCalc()
+#performCalc()
