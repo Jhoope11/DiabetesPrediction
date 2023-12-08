@@ -5,34 +5,35 @@ import pandas as pd
 
 def sameDataType():
     df = pd.read_csv('Type12 copy.csv')
-    df['Diabetes_012'] = pd.to_numeric(df['Diabetes_012'])
+    df['HighChol'] = pd.to_numeric(df['HighChol'])
+    print(df.info())
     
 
 
 
 def performCalc():
-    HighBP = 1
-    HighChol = 1
-    CholCheck = 1
-    smoke = 1
-    stroke = 1
-    heartIssue = 0
-    physAct = 1
-    fruit = 0
-    veg = 0
-    hvyDrinker = 0
-    healthCare = 1
-    noDocBcCost = 0
-    diffWalk = 0
-    bmi = 12
-    genHealth = 1
-    mentalHealth = 1
-    physHealth = 1
-    gender = 1
-    age = 20
-    eduLevel = 5
-    income = 1
-    EnteredInfo = [HighBP, HighChol, CholCheck, bmi, smoke, stroke, heartIssue, physAct, fruit, veg, hvyDrinker, healthCare, noDocBcCost, genHealth, mentalHealth, physHealth, diffWalk, gender, age, eduLevel, income]
+    enteredData = {
+    'HighBP': 1,
+    'HighChol': 1,
+    'CholCheck': 1,
+    'smoke': 1,
+    'stroke': 1,
+    'heartIssue': 0,
+    'physAct': 1,
+    'fruit': 0,
+    'veg': 0,
+    'hvyDrinker': 0,
+    'healthCare': 1,
+    'noDocBcCost': 0,
+    'diffWalk': 0,
+    'bmi': 12,
+    'genHealth': 1,
+    'mentalHealth': 1,
+    'physHealth': 1,
+    'gender': 1,
+    'age': 20,
+    'eduLevel': 5,
+    'income': 1}   
     csvFile = open('./Type12.csv')
     with open('./Type12.csv') as csvFile:
         csvReader= csv.reader(csvFile,delimiter=',')
