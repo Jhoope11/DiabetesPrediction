@@ -1,8 +1,7 @@
 import pandas as pd
 import numpy as np
 from pyscript import PyScript
-import pyodide_js
-await pyodide_js.loadPackage('package_name')
+
 
 ps = PyScript()
 
