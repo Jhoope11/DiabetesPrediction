@@ -1,6 +1,6 @@
-import { DataFrame } from 'dataframe-js';
+const { DataFrame } = require('dataframe-js');
 
-let dfd;
+
 // Function to convert checkbox values to float
 function checkboxToFloat(value) {
   return value === 'on' ? 1.0 : 0.0;
@@ -64,6 +64,7 @@ function performCalc() {
     'Education': eduLevel,
     'Income': income
   };
+  if(dfd){
   const enteredDf = new dfd.DataFrame([enteredData]);
 
   // Assuming you have loaded the CSV data into df using dataframe-js
@@ -94,6 +95,9 @@ function performCalc() {
       console.log("\nAll Matches:");
       console.log(allMatches);
   });
+}else{
+  console.error("dfd is not initialized")
+}
 }
 
 // Call the function when the button is clicked
