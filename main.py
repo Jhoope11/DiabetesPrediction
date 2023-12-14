@@ -4,6 +4,8 @@ from pyscript import PyScript
 
 def performCalc(event):
     ps = PyScript()
+    
+    
     HighBP = ps.get_value("#HighBP")
     HighChol = ps.get_value("#HighChol")
     CholCheck = ps.get_value("#CholCheck")
@@ -17,39 +19,45 @@ def performCalc(event):
     Healthcare = ps.get_value("#Healthcare")
     NoDocCost = ps.get_value("#NoDocCost")
     DiffWalk = ps.get_value("#DiffWalk")
-    BMI = ps.get_value("#BMI")
-    GenHealth = ps.get_value("#genHealth")
-    MentalHealth = ps.get_value("#mentalHealth")
-    PhysHealth = ps.get_value("#physHealth")
-    Gender = ps.get_value("#gender")
-    Age = ps.get_value("#age")
-    EduLevel = ps.get_value("#eduLevel")
-    Income = ps.get_value("#income")
 
+    # Convert checkbox values to float
+    HighBP = float(HighBP == 'on')
+    HighChol = float(HighChol == 'on')
+    CholCheck = float(CholCheck == 'on')
+    Smoke = float(Smoke == 'on')
+    Stroke = float(Stroke == 'on')
+    HeartDiseaseOrAttack = float(HeartDiseaseOrAttack == 'on')
+    PhysAct = float(PhysAct == 'on')
+    Fruit = float(Fruit == 'on')
+    Veg = float(Veg == 'on')
+    HvyAlcCons = float(HvyAlcCons == 'on')
+    Healthcare = float(Healthcare == 'on')
+    NoDocCost = float(NoDocCost == 'on')
+    DiffWalk = float(DiffWalk == 'on')
     # Construct the enteredData dictionary
     enteredData = {
     'Diabetes_012': 0.0,
-    'HighBP': float(HighBP),
-    'HighChol': float(HighChol),
-    'CholCheck': float(CholCheck),
-    'BMI': float(BMI),
-    'Smoker': float(Smoke),
-    'Stroke': float(Stroke),
-    'HeartDiseaseorAttack': float(HeartDiseaseOrAttack),
-    'PhysActivity': float(PhysAct),
-    'Fruits': float(Fruit),
-    'Veggies': float(Veg),
-    'HvyAlcoholConsump': float(HvyAlcCons),
-    'AnyHealthcare': float(Healthcare),
-    'NoDocbcCost': float(NoDocCost),
-    'GenHlth': float(GenHealth),
-    'MentHlth': float(MentalHealth),
-    'PhysHlth': float(PhysHealth),
-    'DiffWalk': float(DiffWalk),
-    'Sex': float(Gender),
-    'Age': float(Age),
-    'Education': float(EduLevel),
-    'Income': float(Income),
+    'HighBP': HighBP,
+    'HighChol': HighChol,
+    'CholCheck': CholCheck,
+    'BMI': float(ps.get_value("#BMI")),
+    'Smoker': Smoke,
+    'Stroke': Stroke,
+    'HeartDiseaseorAttack': HeartDiseaseOrAttack,
+    'PhysActivity': PhysAct,
+    'Fruits': Fruit,
+    'Veggies': Veg,
+    'HvyAlcoholConsump': HvyAlcCons,
+    'AnyHealthcare': Healthcare,
+    'NoDocbcCost': NoDocCost,
+    'GenHlth': float(ps.get_value("#genHealth")),
+    'MentHlth': float(ps.get_value("#mentalHealth")),
+    'PhysHlth': float(ps.get_value("#physHealth")),
+    'DiffWalk': DiffWalk,
+    'Sex': float(ps.get_value("#gender")),
+    'Age': float(ps.get_value("#age")),
+    'Education': float(ps.get_value("#eduLevel")),
+    'Income': float(ps.get_value("#income")),
     }
 
     
