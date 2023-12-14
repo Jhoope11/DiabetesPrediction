@@ -36,11 +36,11 @@
     <label for="text7">Education level: scale 1-6: 1 = Never attended school or only kindergarten 2 =</label><input type="text" id="eduLevel" name="text7"><br>
     <label for="text8">income scale: scale 1-8: 1 = less than $10,000 5 = less than $35,000 11 =</label><input type="text" id="income" name="text8"><br>
 
-    <!-- Submit Button -->
-    <button type="button" onclick="performCalc()">Submit</button>
+    <button type="button" id="submitBtn">Submit</button>
     <div id="output"></div>
 
-    <!-- Include the external JavaScript file -->
+    <script src="https://unpkg.com/pandas-js"></script>
+    <script src="https://unpkg.com/numjs"></script>
     <script src="main.js"></script>
   </form>
 </body>
