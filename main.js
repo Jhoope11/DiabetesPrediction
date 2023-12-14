@@ -1,5 +1,4 @@
-
-
+import { DataFrame } from 'dataframe-js';
 
 let dfd;
 // Function to convert checkbox values to float
