@@ -51,25 +51,83 @@
           return value ? parseFloat(value) : 0.0;
       }
 
+      // Assuming you have loaded the necessary libraries for data manipulation in JavaScript
+
       function performCalc() {
-          // ... (Rest of the JavaScript code)
+      // Read data from the CSV file (replace 'your_file.csv' with the actual path)
+      const csvFilePath = 'your_file.csv';
+  
+      // Assume enteredData is an object
+      const enteredData = {
+      'Diabetes_012': 0.0,
+      'HighBP': 1,
+      'HighChol': 0.0,
+      'CholCheck': 1,
+      'BMI': 12.0,
+      'Smoker': 1.0,
+      'Stroke': 1.0,
+      'HeartDiseaseorAttack': 0.0,
+      'PhysActivity': 1,
+      'Fruits': 0,
+      'Veggies': 0,
+      'HvyAlcoholConsump': 0,
+      'AnyHealthcare': 1,
+      'NoDocbcCost': 0.0,
+      'GenHlth': 1.0,
+      'MentHlth': 1.0,
+      'PhysHlth': 1.0,
+      'DiffWalk': 0.0,
+      'Sex': 1,
+      'Age': 20,
+      'Education': 5.0,
+      'Income': 1.0
+      };
 
-          // Example of how to retrieve values
-          var highBP = checkboxToFloat(document.getElementById('HighBP').checked);
-          var highChol = checkboxToFloat(document.getElementById('HighChol').checked);
-          var cholCheck = checkboxToFloat(document.getElementById('CholCheck').checked);
-          var BMI = textToFloat(document.getElementById('BMI').value);
-          var genHealth = textToFloat(document.getElementById('genHealth').value);
-          // ... (Retrieve values for other inputs) ...
+      // Convert enteredData into an array of objects
+      const enteredDf = [enteredData];
 
-          // Example of how to use the retrieved values
-          console.log('HighBP:', highBP);
-          console.log('HighChol:', highChol);
-          console.log('CholCheck:', cholCheck);
-          console.log('BMI:', BMI);
-          console.log('GenHealth:', genHealth);
-          // ... (Print or use other retrieved values) ...
-      }
+      // Ensure columns in both arrays match
+      const dfColumns = ['column1', 'column2', 'column3', /* Add all column names */];
+      const enteredDfArray = enteredDf.map(obj => {
+        const newObj = {};
+        dfColumns.forEach(col => newObj[col] = obj[col] !== undefined ? obj[col] : null);
+        return newObj;
+      });
+
+      // Convert enteredDf to match the data types of df (assuming dfTypes is an array of data types)
+      const dfTypes = ['number', 'number', 'number', /* Add all data types */];
+      const enteredDfTypedArray = enteredDfArray.map(obj => {
+        const newObj = {};
+        dfColumns.forEach((col, index) => newObj[col] = typeof obj[col] === dfTypes[index] ? obj[col] : null);
+        return newObj;
+      });
+
+      // Perform element-wise comparison
+      const comparisonResult = enteredDfTypedArray.map(obj => {
+        const newObj = {};
+        dfColumns.forEach(col => newObj[col] = obj[col] !== null && dfArray[0][col] === obj[col]);
+        return newObj;
+      });
+
+      // Summary results
+      const columnMatches = dfColumns.map(col => comparisonResult.every(obj => obj[col]));
+      const rowMatches = comparisonResult.map(obj => Object.values(obj).every(val => val));
+      const allMatches = columnMatches.every(match => match) && rowMatches.every(match => match);
+
+      // Print the results (you may want to use console.log instead of print in JavaScript)
+      console.log("\nColumn Matches:");
+      console.log(columnMatches);
+
+      console.log("\nRow Matches:");
+      console.log(rowMatches);
+
+      console.log("\nAll Matches:");
+      console.log(allMatches);
+    }
+
+    // Call the function
+    performCalc();
+
     </script>
   </form>
 </body>
