@@ -1,3 +1,7 @@
+
+
+
+let dfd;
 // Function to convert checkbox values to float
 function checkboxToFloat(value) {
   return value === 'on' ? 1.0 : 0.0;
@@ -61,7 +65,6 @@ function performCalc() {
     'Education': eduLevel,
     'Income': income
   };
-  let dfd;
   const enteredDf = new dfd.DataFrame([enteredData]);
 
   // Assuming you have loaded the CSV data into df using dataframe-js

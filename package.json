@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dataframes": "^0.0.2",
     "pandas-js": "^0.2.4"
   }
 }
