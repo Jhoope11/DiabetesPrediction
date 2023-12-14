@@ -1,6 +1,6 @@
 // Include Pandas-js and NumJS libraries
 import { DataFrame } from 'pandas-js';
-import * as np from 'numjs';
+//import * as np from 'numjs';
 
 // Function to convert checkbox values to float
 function checkboxToFloat(value) {
