@@ -42,18 +42,37 @@ def performCalc():
     #print(df.info())
     #print(enteredDf.info())
     #Locks just the first row as a var since thats what needs to be compared
-    firstRowEnteredDf = enteredDf.iloc[0]
-    #Does the comparison
-    comparisonResult = (df == firstRowEnteredDf)
-        
-    colMatch = comparisonResult.all()
-    rowMatch = comparisonResult.all(axis=1)
-    allMatches = comparisonResult.all().all()
-    matchingPercent = comparisonResult.mean() * 100
-    print(f'column matches: {colMatch}')
-    print(f'Row matches: {rowMatch}')
-    print(f'All matches: {allMatches}')     
-    print(f'Match Percent: \n{matchingPercent}')
+    # Convert DataFrames to NumPy arrays and exclude the first column
+    df_array = df.iloc[:, 1:].to_numpy()
+    enteredDf_array = enteredDf.iloc[:, 1:].to_numpy()
+
+    comparisonResult = np.equal(df_array, enteredDf_array)
+    # Summary results
+    columnMatches = np.all(comparisonResult, axis=0)
+    rowMatches = np.all(comparisonResult, axis=1)
+    allMatches = np.all(comparisonResult)
+    matchingPercent = comparisonResult.mean(axis=0) * 100
+    matchingPercentColumns = (comparisonResult.mean(axis=0) * 100).round(2)
+    matchingPercentRows = (comparisonResult.mean(axis=1) * 100).round(2)
+
+    # Print the results
+    print("\nColumn Matches:")
+    print(pd.Series(columnMatches, index=df.columns[1:]))  # Printing with column names
+
+    print("\nRow Matches:")
+    print(pd.Series(rowMatches, index=df.index))  # Printing with row indices
+
+    print("\nAll Matches:")
+    print(allMatches)
+
+    print("\nMatching Percent (Columns):")
+    print(pd.Series(matchingPercentColumns, index=df.columns[1:]))
+
+    print("\nMatching Percent (Rows):")
+    print(pd.Series(matchingPercentRows, index=df.index))
+    
+    print("\nMatching Percent:")
+    print(pd.Series(matchingPercent, index=df.columns[1:]))
     #outputDiv= document.querySelector("#output")
     #outputDiv.innerText = 'processed {lineCount} lines. \n{PercentType0} are not diabetic. \n{PercentType1} Have are type 1 \n{PercentType2} Have are type 2'
 ######################################MAIN#######################################
