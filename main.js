@@ -61,32 +61,37 @@ function performCalc() {
     'Education': eduLevel,
     'Income': income
   };
-  const enteredDf = new DataFrame([enteredData]);
+  let dfd;
+  const enteredDf = new dfd.DataFrame([enteredData]);
 
-  // Assuming you have loaded the CSV data into df using pandas-js
-  const df = DataFrame.fromCSV(csvFilePath);
+  // Assuming you have loaded the CSV data into df using dataframe-js
+  dfd.fromCSV(csvFilePath).then((df) => {
+      // Ensure columns in both DataFrames match
+      const dfColumns = df.listColumns();
+      const enteredDfMatched = enteredDf.reorder(dfColumns, null);
 
-  // Ensure columns in both DataFrames match
-  const dfColumns = df.columns;
-  const enteredDfMatched = enteredDf.reindex(dfColumns, null);
+      // Perform element-wise comparison
+      const comparisonResult = enteredDfMatched.toArray().map((obj) => {
+          const newObj = {};
+          dfColumns.forEach((col) => newObj[col] = obj[col] !== undefined ? obj[col] : null);
+          return newObj;
+      });
 
-  // Perform element-wise comparison
-  const comparisonResult = enteredDfMatched.values.eq(df.values);
+      // Summary results
+      const columnMatches = dfColumns.map((col) => comparisonResult.every((obj) => obj[col]));
+      const rowMatches = comparisonResult.map((obj) => Object.values(obj).every((val) => val));
+      const allMatches = columnMatches.every((match) => match) && rowMatches.every((match) => match);
 
-  // Summary results
-  const columnMatches = comparisonResult.all(0).toArray();
-  const rowMatches = comparisonResult.all(1).toArray();
-  const allMatches = comparisonResult.all().get();
+      // Print the results (you may want to use console.log instead of print in JavaScript)
+      console.log("\nColumn Matches:");
+      console.log(columnMatches);
 
-  // Print the results (you may want to use console.log instead of print in JavaScript)
-  console.log("\nColumn Matches:");
-  console.log(columnMatches);
+      console.log("\nRow Matches:");
+      console.log(rowMatches);
 
-  console.log("\nRow Matches:");
-  console.log(rowMatches);
-
-  console.log("\nAll Matches:");
-  console.log(allMatches);
+      console.log("\nAll Matches:");
+      console.log(allMatches);
+  });
 }
 
 // Call the function when the button is clicked
