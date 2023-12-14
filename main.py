@@ -1,66 +1,58 @@
 import pandas as pd
 import numpy as np
 from pyscript import PyScript
+ps = PyScript()
+
+# Function to convert checkbox values to float
+def checkboxToFloat(value):
+        return float(value == 'on') if value else 0.0
+
+# Function to convert text values to float, defaulting to 0.0 if empty
+def textToFloat(value):
+    return float(value) if value else 0.0
 
 def performCalc(event):
-    ps = PyScript()
     
     
-    HighBP = ps.get_value("#HighBP")
-    HighChol = ps.get_value("#HighChol")
-    CholCheck = ps.get_value("#CholCheck")
-    Smoke = ps.get_value("#Smoke")
-    Stroke = ps.get_value("#Stroke")
-    HeartDiseaseOrAttack = ps.get_value("#HeartDiseaseOrAttack")
-    PhysAct = ps.get_value("#PhysAct")
-    Fruit = ps.get_value("#Fruit")
-    Veg = ps.get_value("#Veg")
-    HvyAlcCons = ps.get_value("#HvyAlcCons")
-    Healthcare = ps.get_value("#Healthcare")
-    NoDocCost = ps.get_value("#NoDocCost")
-    DiffWalk = ps.get_value("#DiffWalk")
-
-    # Convert checkbox values to float
-    HighBP = float(HighBP == 'on')
-    HighChol = float(HighChol == 'on')
-    CholCheck = float(CholCheck == 'on')
-    Smoke = float(Smoke == 'on')
-    Stroke = float(Stroke == 'on')
-    HeartDiseaseOrAttack = float(HeartDiseaseOrAttack == 'on')
-    PhysAct = float(PhysAct == 'on')
-    Fruit = float(Fruit == 'on')
-    Veg = float(Veg == 'on')
-    HvyAlcCons = float(HvyAlcCons == 'on')
-    Healthcare = float(Healthcare == 'on')
-    NoDocCost = float(NoDocCost == 'on')
-    DiffWalk = float(DiffWalk == 'on')
+    # Assuming you have HTML elements with the specified IDs
+    highBP = checkboxToFloat(ps.get_value("#HighBP"))
+    highChol = checkboxToFloat(ps.get_value("#HighChol"))
+    cholCheck = checkboxToFloat(ps.get_value("#CholCheck"))
+    smoke = checkboxToFloat(ps.get_value("#Smoke"))
+    stroke = checkboxToFloat(ps.get_value("#Stroke"))
+    heartDiseaseOrAttack = checkboxToFloat(ps.get_value("#HeartDiseaseOrAttack"))
+    physAct = checkboxToFloat(ps.get_value("#PhysAct"))
+    fruit = checkboxToFloat(ps.get_value("#Fruit"))
+    veg = checkboxToFloat(ps.get_value("#Veg"))
+    hvyAlcCons = checkboxToFloat(ps.get_value("#HvyAlcCons"))
+    healthcare = checkboxToFloat(ps.get_value("#Healthcare"))
+    noDocCost = checkboxToFloat(ps.get_value("#NoDocCost"))
+    diffWalk = checkboxToFloat(ps.get_value("#DiffWalk"))
     # Construct the enteredData dictionary
     enteredData = {
     'Diabetes_012': 0.0,
-    'HighBP': HighBP,
-    'HighChol': HighChol,
-    'CholCheck': CholCheck,
-    'BMI': float(ps.get_value("#BMI")),
-    'Smoker': Smoke,
-    'Stroke': Stroke,
-    'HeartDiseaseorAttack': HeartDiseaseOrAttack,
-    'PhysActivity': PhysAct,
-    'Fruits': Fruit,
-    'Veggies': Veg,
-    'HvyAlcoholConsump': HvyAlcCons,
-    'AnyHealthcare': Healthcare,
-    'NoDocbcCost': NoDocCost,
-    'GenHlth': float(ps.get_value("#genHealth")),
-    'MentHlth': float(ps.get_value("#mentalHealth")),
-    'PhysHlth': float(ps.get_value("#physHealth")),
-    'DiffWalk': DiffWalk,
-    'Sex': float(ps.get_value("#gender")),
-    'Age': float(ps.get_value("#age")),
-    'Education': float(ps.get_value("#eduLevel")),
-    'Income': float(ps.get_value("#income")),
+    'HighBP': highBP,
+    'HighChol': highChol,
+    'CholCheck': cholCheck,
+    'BMI': textToFloat(ps.get_value("#BMI")),
+    'Smoker': smoke,
+    'Stroke': stroke,
+    'HeartDiseaseOrAttack': heartDiseaseOrAttack,
+    'PhysActivity': physAct,
+    'Fruits': fruit,
+    'Veggies': veg,
+    'HvyAlcoholConsump': hvyAlcCons,
+    'AnyHealthcare': healthcare,
+    'NoDocbcCost': noDocCost,
+    'GenHlth': textToFloat(ps.get_value("#genHealth")),
+    'MentHlth': textToFloat(ps.get_value("#mentalHealth")),
+    'PhysHlth': textToFloat(ps.get_value("#physHealth")),
+    'DiffWalk': diffWalk,
+    'Sex': textToFloat(ps.get_value("#gender")),
+    'Age': textToFloat(ps.get_value("#age")),
+    'Education': textToFloat(ps.get_value("#eduLevel")),
+    'Income': textToFloat(ps.get_value("#income")),
     }
-
-    
     csv_file_path = './Type12.csv'
     df = pd.read_csv(csv_file_path)
     enteredDf = pd.DataFrame([enteredData])
