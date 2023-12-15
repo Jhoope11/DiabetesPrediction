@@ -8,8 +8,8 @@
 <body>
     <h2>Results:</h2>
     <ul>
-        {% for key, value in result.items() %}
-            <li>{{ key }}: {% if value %}Valid{% else %}Invalid{% endif %}</li>
+        {% for key, count in result.items() %}
+            <li>{{ key }}: {{ count }} matches</li>
         {% endfor %}
     </ul>
 </body>
