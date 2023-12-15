@@ -81,11 +81,6 @@ function parseCSV(csvData) {
     const columnCounts = Array(Object.keys(parsedData[0]).length).fill(0);
     let matchingRowsCount = 0;
     let matchingValue = false;
-    let firstLoop = false;
-    let secLoop = false;
-    let x = 0;
-    let y = 0;
-    let z = 0;
     // Loop through each row in the CSV data
     parsedData.forEach(row => {
   
@@ -102,7 +97,7 @@ function parseCSV(csvData) {
                 // Increment the count for the current column
                 columnCounts[index]++;
                 matchingValue = true;
-                //secLoop = true;
+                firstLoop = true;
                 }
         } else {
             // Check if the user-entered value is the same as the CSV value
@@ -111,37 +106,24 @@ function parseCSV(csvData) {
                 // Increment the count for the current column
                 columnCounts[index]++;
                 matchingValue = true;
-                //firstLoop = true;
+                secLoop = true;
+                //console.log(key)
             }
         }
         if(matchingValue){
-            console.log(matchingValue);
-            /*
-            if(firstLoop){
-                x += 1;
-                firstLoop = false;
-            }
-            if(secLoop){
-                y += 1;
-                secLoop = false;
-            } 
-            */
-            key = 'Diabetes_012';
-            if(csvValue == 2.0){
-                console.log(key, userValue, csvValue, x, y ,z);
+            key === 'Type012'
+            if(csvValue === 2.0){
+                console.log(key, userValue, csvValue);
                 matchingRowsCount++;
-                //z += 1;
             }  
             matchingValue = false;
-            //console.log(matchingValue);
         }
         });
     });
-    //console.log(x,y,z);
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
-    const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
-    console.log(userValues)
+    const matchingRowsPercentage = ((matchingRowsCount / parsedData.length) * 100);
+    console.log(userValues);
     console.log('Keys:', Object.keys(parsedData[0]));
     console.log('Percentages:', percentages);
     // Format the output
@@ -152,6 +134,6 @@ function parseCSV(csvData) {
     })
     .join('\n');
     // Add information about matching rows with diabetes_012 equal to 2.0
-    formattedOutput += `\nPercentage of similarity with the same entries that had type 2 Diabetes: ${matchingRowsPercentage.toFixed(2)}`;
+    formattedOutput += `\nMatching Rows with diabetes_012 === 2.0: ${matchingRowsPercentage.toFixed(2)}`;
     return formattedOutput;
   }
