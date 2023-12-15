@@ -43,7 +43,7 @@ function submitForm(event) {
         Income: parseInt(document.getElementById('income').value) || 0.0,
     };
     const percentage = calculatePrediction(userValues, parsedData);
-    document.getElementById('output').innerText = `Prediction Result: ${percentage}%`;
+    document.getElementById('output').innerText = `Prediction Result: \n${percentage}%`;
   }
 
 function parseCSV(csvData) {
@@ -81,7 +81,6 @@ function parseCSV(csvData) {
   
     // Loop through each row in the CSV data
     parsedData.forEach(row => {
-      let matchesDiabetes012 = false;
   
       // Loop through each column in the row
       Object.keys(row).forEach((key, index) => {
@@ -94,13 +93,6 @@ function parseCSV(csvData) {
           if (userValue === csvValue) {
             // Increment the count for the current column
             columnCounts[index]++;
-            if(key === 'Diabetes_012'){
-                if(csvValue === 2.0){
-                    console.log(csvValue);
-                    matchingRowsCount++;
-                }
-                
-            }
           }
         } else {
           // Check if the user-entered value is within 5 of the CSV value
@@ -109,7 +101,12 @@ function parseCSV(csvData) {
             columnCounts[index]++;
           }
         }
-
+        if(key === 'Diabetes_012'){
+            if(csvValue === 2.0){
+                //console.log(csvValue);
+                matchingRowsCount++;
+            }   
+        }
       });
 
     });
@@ -120,7 +117,11 @@ function parseCSV(csvData) {
   
     // Format the output
     formattedOutput = Object.keys(parsedData[0])
-      .map((key, index) => `${key}: ${percentages[index].toFixed(2)}%`)
+      .slice(1)
+      .map((key, index) => {
+        const trimmedKey = key.trim();
+        return index === 0 ? `${trimmedKey}: ${percentages[index].toFixed(2)}%` : `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
+      })
       .join('\n');
   
     // Add information about matching rows with diabetes_012 equal to 2.0
