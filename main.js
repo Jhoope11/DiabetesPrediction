@@ -81,6 +81,11 @@ function parseCSV(csvData) {
     const columnCounts = Array(Object.keys(parsedData[0]).length).fill(0);
     let matchingRowsCount = 0;
     let matchingValue = false;
+    let firstLoop = false;
+    let secLoop = false;
+    let x = 0;
+    let y = 0;
+    let z = 0;
     // Loop through each row in the CSV data
     parsedData.forEach(row => {
   
@@ -88,8 +93,7 @@ function parseCSV(csvData) {
         Object.keys(row).forEach((key, index) => {
         const csvValue = row[key];
         const userValue = userValues[key];
-        let x;
-        let y;
+        
         // Check the condition based on the column name
         if (key === 'HighBP' || key === 'HighChol' || key === 'CholCheck' ||  key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlcoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education') {
             // Check if the user-entered value is the same as the CSV value
@@ -98,8 +102,8 @@ function parseCSV(csvData) {
             // Increment the count for the current column
             columnCounts[index]++;
             matchingValue = true;
-            console.log(key)
-            x += 1;
+            firstLoop = true;
+            //console.log(key)
             }
         } 
         else {
@@ -108,27 +112,34 @@ function parseCSV(csvData) {
             // Increment the count for the current column
             columnCounts[index]++;
             matchingValue = true;
-            y += 1;
+            secLoop = true;
             }
         }
         if(matchingValue){
-            
-                key = 'Diabetes_012'
-                if(csvValue === 2.0){
-                    //console.log(csvValue);
-                    matchingRowsCount++;
-                    console.log(key, userValue, csvValue);
-                }  
-            
+            if(firstLoop){
+                x += 1;
+                firstLoop = false;
+            }
+            if(secLoop){
+                y += 1;
+                secLoop = false;
+            } 
+            console.log(key, userValue, csvValue, x, y ,z);
+            key = 'Diabetes_012'
+            if(csvValue === 2.0){
+                //console.log(csvValue);
+                matchingRowsCount++;
+                z += 1;
+            }  
             matchingValue = false;
         }
         });
     });
-  
+  console.log(x,y,z);
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
     const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
-    console.log(x,y);
+    
     console.log(userValues)
     console.log('Keys:', Object.keys(parsedData[0]));
     console.log('Percentages:', percentages);
