@@ -42,7 +42,7 @@ function submitForm(event) {
         Sex: parseInt(document.getElementById('gender').value) || 0.0,
         Age: parseInt(document.getElementById('age').value) || 0.0,
         Education: parseFloat(document.getElementById('eduLevel').value) || 0.0,
-        Income: parseFloat(document.getElementById('income').value) || 0.0,
+        Money: parseFloat(document.getElementById('income').value) || 0.0,
     };
     const percentage = calculatePrediction(userValues, parsedData);
     document.getElementById('output').innerText = `Prediction Result: \n${percentage}%`;
@@ -95,24 +95,24 @@ function parseCSV(csvData) {
         const userValue = userValues[key];
         
         // Check the condition based on the column name
-        if (key === 'HighBP' || key === 'HighChol' || key === 'CholCheck' ||  key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlcoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education') {
+
+        if (key === 'BMI') {
+            // Check if the user-entered value is within 5 of the CSV value
+            if (Math.abs(userValue - csvValue) <= 5) {
+                // Increment the count for the current column
+                columnCounts[index]++;
+                matchingValue = true;
+                secLoop = true;
+                }
+        } else {
             // Check if the user-entered value is the same as the CSV value
             if (userValue === csvValue) {
-            //console.log(key, userValue, csvValue);
-            // Increment the count for the current column
-            columnCounts[index]++;
-            matchingValue = true;
-            firstLoop = true;
-            //console.log(key)
-            }
-        } 
-        else {
-            // Check if the user-entered value is within 5 of the CSV value
-            if (Math.abs(userValue - csvValue) <= 2) {
-            // Increment the count for the current column
-            columnCounts[index]++;
-            matchingValue = true;
-            secLoop = true;
+                //console.log(key, userValue, csvValue);
+                // Increment the count for the current column
+                columnCounts[index]++;
+                matchingValue = true;
+                firstLoop = true;
+                //console.log(key)
             }
         }
         if(matchingValue){
@@ -124,10 +124,9 @@ function parseCSV(csvData) {
                 y += 1;
                 secLoop = false;
             } 
-            console.log(key, userValue, csvValue, x, y ,z);
             key = 'Diabetes_012'
             if(csvValue === 2.0){
-                //console.log(csvValue);
+                console.log(key, userValue, csvValue, x, y ,z);
                 matchingRowsCount++;
                 z += 1;
             }  
@@ -139,7 +138,6 @@ function parseCSV(csvData) {
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
     const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
-    
     console.log(userValues)
     console.log('Keys:', Object.keys(parsedData[0]));
     console.log('Percentages:', percentages);
@@ -150,9 +148,7 @@ function parseCSV(csvData) {
         return `${trimmedKey}: ${percentages[index].toFixed(2)}%`;
     })
     .join('\n');
-  
     // Add information about matching rows with diabetes_012 equal to 2.0
     formattedOutput += `\nMatching Rows with diabetes_012 === 2.0: ${matchingRowsPercentage.toFixed(2)}`;
-  
     return formattedOutput;
   }
