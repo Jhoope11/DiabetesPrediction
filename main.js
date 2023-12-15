@@ -9,8 +9,10 @@ fetch(csvFilePath)
     parsedData = parseCSV(csvData);
 
     // Now you can use the parsedData for further processing
+    document.getElementById('output').innerText = 'CSV Loaded';
   })
   .catch(error => console.error('Error fetching CSV:', error));
+
 
 function submitForm(event) {
     event.preventDefault();
@@ -88,9 +90,11 @@ function parseCSV(csvData) {
         const userValue = userValues[key];
   
         // Check the condition based on the column name
-        if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsumption' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
+        if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
           // Check if the user-entered value is the same as the CSV value
           if (userValue === csvValue) {
+            console.log(key);
+            console.log(userValue, csvValue);
             // Increment the count for the current column
             columnCounts[index]++;
           }
@@ -117,10 +121,17 @@ function parseCSV(csvData) {
   
     // Format the output
     formattedOutput = Object.keys(parsedData[0])
-      .slice(1)
+      //.slice(1)
       .map((key, index) => {
         const trimmedKey = key.trim();
-        return index === 0 ? `${trimmedKey}: ${percentages[index].toFixed(2)}%` : `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
+        if (index === 0) {
+          return `${trimmedKey}: ${percentages[index].toFixed(2)}%`;
+        } else if (index === Object.keys(parsedData[0]).length - 1) {
+          // Special handling for the last column ('Income')
+          return `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
+        } else {
+          return `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
+        }
       })
       .join('\n');
   
