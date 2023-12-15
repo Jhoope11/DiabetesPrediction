@@ -26,7 +26,7 @@ function submitForm(event) {
         HighChol: document.getElementById('HighChol').checked ? 1.0 : 0.0,
         CholCheck: document.getElementById('CholCheck').checked ? 1 : 0,
         Smoker: document.getElementById('Smoke').checked ? 1.0 : 0.0,
-        Stroke: document.getElementById('Stroke').checked ? 1.0 : 0.0,
+        Stroke: document.getElementById('Stroke').checked ? 0.0 : 1.0,
         HeartDiseaseorAttack: document.getElementById('HeartDiseaseOrAttack').checked ? 1.0 : 0.0,
         PhysActivity: document.getElementById('PhysAct').checked ? 1 : 0,
         Fruits: document.getElementById('Fruit').checked ? 1 : 0,
@@ -35,14 +35,14 @@ function submitForm(event) {
         AnyHealthcare: document.getElementById('Healthcare').checked ? 1 : 0,
         NoDocbcCost: document.getElementById('NoDocCost').checked ? 1.0 : 0.0,
         DiffWalk: document.getElementById('DiffWalk').checked ? 1.0 : 0.0,
-        BMI: parseFloat(document.getElementById('BMI').value) || 0.0,
-        GenHlth: parseFloat(document.getElementById('genHealth').value) || 0.0,
-        MentHlth: parseFloat(document.getElementById('mentalHealth').value) || 0.0,
-        PhysHlth: parseFloat(document.getElementById('physHealth').value) || 0.0,
-        Sex: parseInt(document.getElementById('gender').value) || 0.0,
-        Age: parseInt(document.getElementById('age').value) || 0.0,
-        Education: parseFloat(document.getElementById('eduLevel').value) || 0.0,
-        Money: parseFloat(document.getElementById('income').value) || 0.0,
+        BMI: parseFloat(document.getElementById('BMI').value) || -1,
+        GenHlth: parseFloat(document.getElementById('genHealth').value) || -1,
+        MentHlth: parseFloat(document.getElementById('mentalHealth').value) || -1,
+        PhysHlth: parseFloat(document.getElementById('physHealth').value) || -1,
+        Sex: parseInt(document.getElementById('gender').value) || -1,
+        Age: parseInt(document.getElementById('age').value) || -1,
+        Education: parseFloat(document.getElementById('eduLevel').value) || -1,
+        Money: parseFloat(document.getElementById('income').value) || -1,
     };
     console.log(userValues);
     const percentage = calculatePrediction(userValues, parsedData);
@@ -84,68 +84,79 @@ function parseCSV(csvData) {
     let x = 0;
     let y = 0;
     let z = 0;
+    let type012RowsCount = 0;
+    let timesMatchedPerRow = 0;
     // Loop through each row in the CSV data
     parsedData.forEach(row => {
+      timesMatchedPerRow = 0;
   
-        // Loop through each column in the row
-        Object.keys(row).forEach((key, index) => {
-        const csvValue = row[key];
-        const userValue = userValues[key];
+      // Loop through each column in the row
+      Object.keys(row).forEach((key, index) => {
+      const csvValue = row[key];
+      const userValue = userValues[key];
         
-        // Check the condition based on the column name
+      // Check the condition based on the column name
 
-        if (key === 'BMI') {
-            // Check if the user-entered value is within 5 of the CSV value
-            if (Math.abs(userValue - csvValue) <= 5) {
-                // Increment the count for the current column
-                columnCounts[index]++;
-                matchingValue = true;
-                secLoop = true;
-                }
-        } else {
-            // Check if the user-entered value is the same as the CSV value
-            if (userValue === csvValue) {
-                //console.log(key, userValue, csvValue);
-                // Increment the count for the current column
-                columnCounts[index]++;
-                matchingValue = true;
-                firstLoop = true;
-                //console.log(key)
-            }
-        }
-
-        if(matchingValue){
+      if (key === 'BMI') {
+          // Check if the user-entered value is within 5 of the CSV value
+          if (Math.abs(userValue - csvValue) <= 5) {
+              // Increment the count for the current column
+              columnCounts[index]++;
+              matchingValue = true;
+              timesMatchedPerRow++;
+              firstLoop = true;
+              }
+      } else {
+          // Check if the user-entered value is the same as the CSV value
+          if (userValue === csvValue) {
+              //console.log(key, userValue, csvValue);
+              // Increment the count for the current column
+              columnCounts[index]++;
+              matchingValue = true;
+              secLoop = true;
+              timesMatchedPerRow++;
+              //console.log(key)
+          }
+      }
+      if( key === 'Type012'){
+        
+      }
+      if(matchingValue){
+          
+        if(key === 'Type012' && csvValue === 2.0){ 
           console.log(key, csvValue, x, y ,z);
-        if(key === 'Type012' && csvValue === 2.0){
+          type012RowsCount++;
             if(firstLoop){
-              x += 1;
+              x++;
               firstLoop = false;
             }
             if(secLoop){
-              y += 1;
+              y++;
               secLoop = false;
             } 
-            z += 1;
-            
-            matchingRowsCount++; 
-            //console.log(key);
+            z++;
+            if(timesMatchedPerRow == 0){
+              matchingRowsCount++;
+            }   
             matchingValue = false;
         }
-        }
-        });
+      } 
+      //console.log(timesMatchedPerRow);
+      });
       });
     console.log(x,y,z);
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
-    const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
+    const matchingRowsPercentage = (matchingRowsCount / type012RowsCount) * 100;
     console.log(userValues)
     console.log('Keys:', Object.keys(parsedData[0]));
     console.log('Percentages:', percentages);
     // Format the output
     formattedOutput = Object.keys(parsedData[0])
+    .filter((key,index) => index > 0) 
     .map((key, index) => {
         const trimmedKey = key.trim();
-        return `${trimmedKey}: ${percentages[index].toFixed(2)}%`;
+        return `${trimmedKey}: ${percentages[index+1].toFixed(2)}%`;
     })
     .join('\n');
     // Add information about matching rows with diabetes_012 equal to 2.0
