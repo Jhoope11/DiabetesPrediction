@@ -1,6 +1,16 @@
 let dfd;
-if (typeof dfd === 'undefined') {
-  dfd = require('dataframe-js');
+initializeDfd().then(() => {
+  
+  document.getElementById('submitBtn').addEventListener('click', performCalc);
+});
+function initializeDfd() {
+  return new Promise((resolve) => {
+    const { DataFrame } = dfd; 
+    // Perform initialization steps, e.g., loading data
+    // Once initialization is complete, call resolve()
+    // Example: dfd = initializeDataFrame();
+    resolve();
+  });
 }
 // Function to convert checkbox values to float
 function checkboxToFloat(value) {
