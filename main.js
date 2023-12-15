@@ -127,13 +127,13 @@ function parseCSV(csvData) {
             } 
             */
             key = 'Diabetes_012';
-            if(csvValue === 2.0){
+            if(csvValue == 2.0){
                 console.log(key, userValue, csvValue, x, y ,z);
                 matchingRowsCount++;
                 //z += 1;
             }  
             matchingValue = false;
-            console.log(matchingValue);
+            //console.log(matchingValue);
         }
         });
     });
