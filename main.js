@@ -22,27 +22,27 @@ function submitForm(event) {
         return;
     }
     const userValues = {
-        HighBP: document.getElementById('HighBP').checked ? 1.0 : 0.0,
+        HighBP: document.getElementById('HighBP').checked ? 1 : 0,
         HighChol: document.getElementById('HighChol').checked ? 1.0 : 0.0,
-        CholCheck: document.getElementById('CholCheck').checked ? 1.0 : 0.0,
+        CholCheck: document.getElementById('CholCheck').checked ? 1 : 0,
         Smoker: document.getElementById('Smoke').checked ? 1.0 : 0.0,
         Stroke: document.getElementById('Stroke').checked ? 1.0 : 0.0,
         HeartDiseaseorAttack: document.getElementById('HeartDiseaseOrAttack').checked ? 1.0 : 0.0,
-        PhysActivity: document.getElementById('PhysAct').checked ? 1.0 : 0.0,
-        Fruits: document.getElementById('Fruit').checked ? 1.0 : 0.0,
-        Veggies: document.getElementById('Veg').checked ? 1.0 : 0.0,
-        HvyAlcoholConsump: document.getElementById('HvyAlcCons').checked ? 1.0 : 0.0,
-        AnyHealthcare: document.getElementById('Healthcare').checked ? 1.0 : 0.0,
+        PhysActivity: document.getElementById('PhysAct').checked ? 1 : 0,
+        Fruits: document.getElementById('Fruit').checked ? 1 : 0,
+        Veggies: document.getElementById('Veg').checked ? 1 : 0,
+        HvyAlcoholConsump: document.getElementById('HvyAlcCons').checked ? 1 : 0,
+        AnyHealthcare: document.getElementById('Healthcare').checked ? 1 : 0,
         NoDocbcCost: document.getElementById('NoDocCost').checked ? 1.0 : 0.0,
         DiffWalk: document.getElementById('DiffWalk').checked ? 1.0 : 0.0,
         BMI: parseFloat(document.getElementById('BMI').value) || 0.0,
-        GenHlth: parseInt(document.getElementById('genHealth').value) || 0.0,
-        MentHlth: parseInt(document.getElementById('mentalHealth').value) || 0.0,
-        PhysHlth: parseInt(document.getElementById('physHealth').value) || 0.0,
-        Sex: document.getElementById('gender').value || 0.0,
+        GenHlth: parseFloat(document.getElementById('genHealth').value) || 0.0,
+        MentHlth: parseFloat(document.getElementById('mentalHealth').value) || 0.0,
+        PhysHlth: parseFloat(document.getElementById('physHealth').value) || 0.0,
+        Sex: parseInt(document.getElementById('gender').value) || 0.0,
         Age: parseInt(document.getElementById('age').value) || 0.0,
-        Education: parseInt(document.getElementById('eduLevel').value) || 0.0,
-        Income: parseInt(document.getElementById('income').value) || 0.0,
+        Education: parseFloat(document.getElementById('eduLevel').value) || 0.0,
+        Income: parseFloat(document.getElementById('income').value) || 0.0,
     };
     const percentage = calculatePrediction(userValues, parsedData);
     document.getElementById('output').innerText = `Prediction Result: \n${percentage}%`;
@@ -80,59 +80,65 @@ function parseCSV(csvData) {
     // Loop through each row in the CSV data and compare values
     const columnCounts = Array(Object.keys(parsedData[0]).length).fill(0);
     let matchingRowsCount = 0;
-  
+    let matchingValue = false;
     // Loop through each row in the CSV data
     parsedData.forEach(row => {
   
-      // Loop through each column in the row
-      Object.keys(row).forEach((key, index) => {
+        // Loop through each column in the row
+        Object.keys(row).forEach((key, index) => {
         const csvValue = row[key];
         const userValue = userValues[key];
-  
+        let x;
+        let y;
         // Check the condition based on the column name
-        if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
-          // Check if the user-entered value is the same as the CSV value
-          if (userValue === csvValue) {
-            console.log(key, userValue, csvValue);
+        if (key === 'HighBP' || key === 'HighChol' || key === 'CholCheck' ||  key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlcoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education') {
+            // Check if the user-entered value is the same as the CSV value
+            if (userValue === csvValue) {
+            //console.log(key, userValue, csvValue);
             // Increment the count for the current column
             columnCounts[index]++;
-          }
-        } else {
-          // Check if the user-entered value is within 5 of the CSV value
-          if (Math.abs(userValue - csvValue) <= 5) {
+            matchingValue = true;
+            console.log(key)
+            x += 1;
+            }
+        } 
+        else {
+            // Check if the user-entered value is within 5 of the CSV value
+            if (Math.abs(userValue - csvValue) <= 2) {
             // Increment the count for the current column
             columnCounts[index]++;
-          }
+            matchingValue = true;
+            y += 1;
+            }
         }
-        if(key === 'Diabetes_012'){
-            if(csvValue === 2.0){
-                //console.log(csvValue);
-                matchingRowsCount++;
-            }   
+        if(matchingValue){
+            
+                key = 'Diabetes_012'
+                if(csvValue === 2.0){
+                    //console.log(csvValue);
+                    matchingRowsCount++;
+                    console.log(key, userValue, csvValue);
+                }  
+            
+            matchingValue = false;
         }
-      });
-
+        });
     });
   
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
     const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
-  
+    console.log(x,y);
+    console.log(userValues)
+    console.log('Keys:', Object.keys(parsedData[0]));
+    console.log('Percentages:', percentages);
     // Format the output
     formattedOutput = Object.keys(parsedData[0])
-      //.slice(1)
-      .map((key, index) => {
+    .map((key, index) => {
         const trimmedKey = key.trim();
-        if (index === 0) {
-          return `${trimmedKey}: ${percentages[index].toFixed(2)}%`;
-        } else if (index === Object.keys(parsedData[0]).length - 1) {
-          // Special handling for the last column ('Income')
-          return `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
-        } else {
-          return `${trimmedKey}: ${percentages[index - 1].toFixed(2)}%`;
-        }
-      })
-      .join('\n');
+        return `${trimmedKey}: ${percentages[index].toFixed(2)}%`;
+    })
+    .join('\n');
   
     // Add information about matching rows with diabetes_012 equal to 2.0
     formattedOutput += `\nMatching Rows with diabetes_012 === 2.0: ${matchingRowsPercentage.toFixed(2)}`;
