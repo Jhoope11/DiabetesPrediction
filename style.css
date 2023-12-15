@@ -1,15 +1,20 @@
 body {
     font-family: 'Arial', sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: #333; /* Dark gray background for the body */
+    color: white; /* Text color for the body */
 }
 
 form {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 5px solid #3498db; /* Blue border for the form */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f2f2f2; /* Light gray background for the form */
+    color: black; /* Text color for the form */
 }
 
 label {
@@ -23,7 +28,7 @@ input[type="text"] {
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #3498db;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -34,6 +39,11 @@ button {
 button:hover {
     background-color: #45a049;
 }
+
+#scatterPlot {
+    margin-top: 20px;
+}
+
 
 #scatterPlot {
     margin-top: 20px;
