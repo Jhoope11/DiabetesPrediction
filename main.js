@@ -20,26 +20,28 @@ function submitForm(event) {
         return;
     }
     const userValues = {
-        HighBP: document.getElementById('HighBP').checked,
-        HighChol: document.getElementById('HighChol').checked,
-        BMI: parseFloat(document.getElementById('BMI').value) || 0,
-        Smoker: document.getElementById('Smoke').checked,
-        Stroke: document.getElementById('Stroke').checked,
-        HeartDiseaseorAttack: document.getElementById('HeartDiseaseOrAttack').checked,
-        PhysActivity: document.getElementById('PhysAct').checked,
-        Fruits: document.getElementById('Fruit').checked,
-        Veggies: document.getElementById('Veg').checked,
-        HvyAlchoholConsumption: document.getElementById('HvyAlcCons').checked,
-        AnyHealthcare: document.getElementById('Healthcare').checked,
-        GenHlth: parseInt(document.getElementById('genHealth').value) || 0,
-        MentHlth: parseInt(document.getElementById('mentalHealth').value) || 0,
-        PhysHlth: parseInt(document.getElementById('physHealth').value) || 0,
-        DiffWalk: document.getElementById('DiffWalk').checked,
-        Sex: document.getElementById('gender').value || 0,
-        Age: parseInt(document.getElementById('age').value) || 0,
-        Education: parseInt(document.getElementById('eduLevel').value) || 0,
-        Income: parseInt(document.getElementById('income').value) || 0,
-      };
+        HighBP: document.getElementById('HighBP').checked ? 1.0 : 0.0,
+        HighChol: document.getElementById('HighChol').checked ? 1.0 : 0.0,
+        CholCheck: document.getElementById('CholCheck').checked ? 1.0 : 0.0,
+        Smoker: document.getElementById('Smoke').checked ? 1.0 : 0.0,
+        Stroke: document.getElementById('Stroke').checked ? 1.0 : 0.0,
+        HeartDiseaseorAttack: document.getElementById('HeartDiseaseOrAttack').checked ? 1.0 : 0.0,
+        PhysActivity: document.getElementById('PhysAct').checked ? 1.0 : 0.0,
+        Fruits: document.getElementById('Fruit').checked ? 1.0 : 0.0,
+        Veggies: document.getElementById('Veg').checked ? 1.0 : 0.0,
+        HvyAlcoholConsump: document.getElementById('HvyAlcCons').checked ? 1.0 : 0.0,
+        AnyHealthcare: document.getElementById('Healthcare').checked ? 1.0 : 0.0,
+        NoDocbcCost: document.getElementById('NoDocCost').checked ? 1.0 : 0.0,
+        DiffWalk: document.getElementById('DiffWalk').checked ? 1.0 : 0.0,
+        BMI: parseFloat(document.getElementById('BMI').value) || 0.0,
+        GenHlth: parseInt(document.getElementById('genHealth').value) || 0.0,
+        MentHlth: parseInt(document.getElementById('mentalHealth').value) || 0.0,
+        PhysHlth: parseInt(document.getElementById('physHealth').value) || 0.0,
+        Sex: document.getElementById('gender').value || 0.0,
+        Age: parseInt(document.getElementById('age').value) || 0.0,
+        Education: parseInt(document.getElementById('eduLevel').value) || 0.0,
+        Income: parseInt(document.getElementById('income').value) || 0.0,
+    };
     const percentage = calculatePrediction(userValues, parsedData);
     document.getElementById('output').innerText = `Prediction Result: ${percentage}%`;
   }
@@ -73,48 +75,40 @@ function parseCSV(csvData) {
   }
   
   function calculatePrediction(userValues, parsedData) {
-    // Count the number of times an entered value is within 10 of a value in the CSV file
-    let countWithin10 = 0;
-  
-    // Define a function to check if a user-entered value is within 10 of a CSV value
-    function isWithin5(userValue, csvValue) {
-      return Math.abs(userValue - csvValue) <= 5;
-    }
-    function isTheSame(userValue, csvValue){
-        console.log('isTheSame(userValues.highBP, row.feature1) ')
-        return Math.abs(userValue - csvValue) = 0;
-    }
-  
-    // Loop through each row in the CSV data and compare values
-    parsedData.forEach(row => {
-        if (
-          isWithin5(userValues.HighBP, row.HighBP) &&
-          isWithin5(userValues.HighChol, row.HighChol) &&
-          isWithin5(userValues.BMI, row.BMI) &&
-          isWithin5(userValues.Smoker, row.Smoker) &&
-          isWithin5(userValues.Stroke, row.Stroke) &&
-          isWithin5(userValues.HeartDiseaseorAttack, row.HeartDiseaseorAttack) &&
-          isWithin5(userValues.PhysActivity, row.PhysActivity) &&
-          isWithin5(userValues.Fruits, row.Fruits) &&
-          isWithin5(userValues.Veggies, row.Veggies) &&
-          isWithin5(userValues.HvyAlchoholConsumption, row.HvyAlchoholConsumption) &&
-          isWithin5(userValues.AnyHealthcare, row.AnyHealthcare) &&
-          isWithin5(userValues.GenHlth, row.GenHlth) &&
-          isWithin5(userValues.MentHlth, row.MentHlth) &&
-          isWithin5(userValues.PhysHlth, row.PhysHlth) &&
-          isWithin5(userValues.DiffWalk, row.DiffWalk) &&
-          isTheSame(userValues.Sex, row.Sex) &&
-          isWithin5(userValues.Age, row.Age) &&
-          isWithin5(userValues.Education, row.Education) &&
-          isWithin5(userValues.Income, row.Income)
-        ) {
-          countWithin10++;
+      // Loop through each row in the CSV data and compare values
+    const columnCounts = Array(Object.keys(parsedData[0]).length).fill(0);
+
+  // Loop through each row in the CSV data
+  parsedData.forEach(row => {
+    // Loop through each column in the row
+    Object.keys(row).forEach((key, index) => {
+      const csvValue = row[key];
+      const userValue = userValues[key];
+
+      // Check the condition based on the column name
+      if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsumption' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
+        // Check if the user-entered value is the same as the CSV value
+        if (userValue === csvValue) {
+          // Increment the count for the current column
+          columnCounts[index]++;
         }
-      });
+      } else {
+        // Check if the user-entered value is within 5 of the CSV value
+        if (Math.abs(userValue - csvValue) <= 5) {
+          // Increment the count for the current column
+          columnCounts[index]++;
+        }
+      }
+    });
+  });
   
     // Calculate the percentage
-    const percentage = (countWithin10 / parsedData.length) * 100;
-  
-    // Return the calculated percentage
-    return percentage;
-  }
+    const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
+
+  // Format the output
+  const formattedOutput = Object.keys(parsedData[0])
+    .map((key, index) => `${key}: ${percentages[index].toFixed(2)}%`)
+    .join('\n');
+
+  return formattedOutput;
+}
