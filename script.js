@@ -1,4 +1,3 @@
-// Parse CSV data into an object with headers and data
 async function parseCSV(csvFile) {
     const response = await fetch(csvFile);
     const csvData = await response.text();
@@ -9,40 +8,36 @@ async function parseCSV(csvFile) {
         const values = line.split(',').map(value => parseFloat(value.trim()));
         return Object.fromEntries(headers.map((header, index) => [header, values[index]]));
     });
+
     console.log(headers, data);
     return { headers, data };
 }
 
-// Function to filter data based on user input
 function filterData(data, headers, formData) {
-    return data.filter(entry => {
-        return headers.filter(header => {
-            const userInputValue = formData[header];
-            const entryValue = entry[header];
-            //console.log('Header:', header, 'User Input Value:', userInputValue, 'Entry Value:', entryValue);
-            if (typeof userInputValue === 'boolean') {
-                // For checkboxes
-                return userInputValue ? entryValue === 1.0 : entryValue === 0.0;
-            } else {
-                // For text entries (convert empty to 0.0)
-                const numericUserInput = parseFloat(userInputValue);
-                return (
-                    entryValue !== undefined &&
-                    !isNaN(numericUserInput) &&
-                    entryValue === (userInputValue === '' ? 0.0 : numericUserInput)
-                );
-            }
-        });
-    });
+    return data.filter(entry => headers.filter(header => {
+        const userInputValue = formData[header];
+        const entryValue = entry[header];
+
+        if (typeof userInputValue === 'boolean') {
+            // For checkboxes
+            return userInputValue ? entryValue === 1.0 : entryValue === 0.0;
+        } else {
+            // For text entries (convert empty to 0.0)
+            const numericUserInput = parseFloat(userInputValue);
+            return (
+                entryValue !== undefined &&
+                !isNaN(numericUserInput) &&
+                entryValue === (userInputValue === '' ? 0.0 : numericUserInput)
+            );
+        }
+    }));
 }
 
-
-// Plot a bar chart using Plotly
 function plotBarChart(barChart, data, formData) {
-    const headers = Object.keys(data[0]);
+    const headers = data[0];
 
     // Filter data based on user input
-    const filteredData = filterData(data, headers, formData);
+    const filteredData = filterData(data.slice(1), headers, formData);
 
     // Create a map to store match counts for each header
     const userCounts = new Map();
@@ -52,6 +47,7 @@ function plotBarChart(barChart, data, formData) {
         headers.forEach(header => {
             const userInputValue = parseFloat(formData[header]);
             const entryValue = entry[header];
+
             // For numeric values
             if (entryValue === userInputValue) {
                 // Increment the match count for the current header
@@ -63,14 +59,13 @@ function plotBarChart(barChart, data, formData) {
                     x: [header],
                     y: [yValue],
                     type: 'bar',
-                    name: `${header} (User Input)`,
-                    showlegend: false,
                     marker: { color: 'red' },
                 });
             }
         });
         return bars;
     }, []);
+
     // Plotly Bar Chart
     Plotly.newPlot(barChart, userInputBars, {
         barmode: 'group',
@@ -79,7 +74,7 @@ function plotBarChart(barChart, data, formData) {
         yaxis: { title: 'Incrementing Count' },
     });
 }
-// Function to submit the form and process user input
+
 async function submitForm(event) {
     event.preventDefault();
 
@@ -108,13 +103,10 @@ async function submitForm(event) {
         income: document.getElementById('income').value || 0.0,
     };
 
-    // Parse CSV data from the external file
-    const csvFile = 'Type12.csv'; // Replace with the actual path to your CSV file
+    const csvFile = 'Type12.csv';
     const parsedData = await parseCSV(csvFile);
-
-    // Plot the bar chart
     plotBarChart('barChart', parsedData.data, formData);
 }
 
 // Initial plot when the page loads
-submitForm({ preventDefault: () => {} });
+// submitForm({ preventDefault: () => {} });
