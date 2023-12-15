@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Checker Result</title>
+</head>
+<body>
+    <h2>Results:</h2>
+    <ul>
+        {% for key, value in result.items() %}
+            <li>{{ key }}: {% if value %}Valid{% else %}Invalid{% endif %}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
