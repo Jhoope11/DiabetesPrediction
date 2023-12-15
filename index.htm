@@ -6,7 +6,7 @@
     </head>
 <body>
     <h2>Please Check the box if the answer is Yes or True.</h2>
-    <form id="prediction">
+    <form id="predictionForm">
         <!-- Boolean Entries (Checkboxes) -->
         <label>Do you have a high blood pressure? <input type="checkbox" name="HighBP" id="HighBP"></label><br>
         <label>Do you have a high cholesterol?<input type="checkbox" name="HighChol" id="HighChol"></label><br>
@@ -36,7 +36,7 @@
         <label for="text8">income scale: scale 1-8: 1 = less than $10,000 5 = less than $35,000 11 =</label><input type="text" id="income" name="text8"><br>
         
         <!-- Submit Button -->
-        <button onclick="submitForm()">Submit</button>
+        <button onclick="submitForm(event)">Submit</button>
         <div id="output"></div>
     </form>
     
