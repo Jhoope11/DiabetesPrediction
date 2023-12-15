@@ -44,6 +44,7 @@ function submitForm(event) {
         Education: parseFloat(document.getElementById('eduLevel').value) || 0.0,
         Money: parseFloat(document.getElementById('income').value) || 0.0,
     };
+    console.log(userValues);
     const percentage = calculatePrediction(userValues, parsedData);
     document.getElementById('output').innerText = `Prediction Result: \n${percentage}%`;
   }
@@ -51,28 +52,25 @@ function submitForm(event) {
 function parseCSV(csvData) {
     // Split the CSV data into rows
     const rows = csvData.split('\n');
-  
     // Get the headers from the first row
     const headers = rows[0].split(',');
-  
     // Initialize an array to store the parsed data
     const parsedData = [];
-  
     // Loop through the remaining rows
     for (let i = 1; i < rows.length; i++) {
       // Split each row into values
       const values = rows[i].split(',');
-  
       // Create an object with key-value pairs for each header and value
       const rowObject = {};
       for (let j = 0; j < headers.length; j++) {
         rowObject[headers[j]] = parseFloat(values[j]);
       }
-  
       // Add the row object to the parsed data array
       parsedData.push(rowObject);
+      if(i == 1){
+        console.log(rowObject);
+      }
     }
-  
     return parsedData;
   }
   
@@ -115,7 +113,7 @@ function parseCSV(csvData) {
                 //console.log(key)
             }
         }
-        if(matchingValue){
+        if(key === 'Type012' && csvValue === 2.0){
             if(firstLoop){
               x += 1;
               firstLoop = false;
@@ -124,16 +122,14 @@ function parseCSV(csvData) {
               y += 1;
               secLoop = false;
             } 
-            key = 'Type012'
-            if(csvValue === 2.0){
-              z += 1;
-              console.log(key, userValue, csvValue, x, y ,z);
-              matchingRowsCount++; 
-            }  
+            z += 1;
+            console.log(key, userValue, csvValue, x, y ,z);
+            matchingRowsCount++; 
+            //console.log(key);
             matchingValue = false;
         }
         });
-    });
+      });
     console.log(x,y,z);
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
