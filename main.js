@@ -75,40 +75,56 @@ function parseCSV(csvData) {
   }
   
   function calculatePrediction(userValues, parsedData) {
-      // Loop through each row in the CSV data and compare values
+    // Loop through each row in the CSV data and compare values
     const columnCounts = Array(Object.keys(parsedData[0]).length).fill(0);
-
-  // Loop through each row in the CSV data
-  parsedData.forEach(row => {
-    // Loop through each column in the row
-    Object.keys(row).forEach((key, index) => {
-      const csvValue = row[key];
-      const userValue = userValues[key];
-
-      // Check the condition based on the column name
-      if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsumption' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
-        // Check if the user-entered value is the same as the CSV value
-        if (userValue === csvValue) {
-          // Increment the count for the current column
-          columnCounts[index]++;
+    let matchingRowsCount = 0;
+  
+    // Loop through each row in the CSV data
+    parsedData.forEach(row => {
+      let matchesDiabetes012 = false;
+  
+      // Loop through each column in the row
+      Object.keys(row).forEach((key, index) => {
+        const csvValue = row[key];
+        const userValue = userValues[key];
+  
+        // Check the condition based on the column name
+        if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsumption' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
+          // Check if the user-entered value is the same as the CSV value
+          if (userValue === csvValue) {
+            // Increment the count for the current column
+            columnCounts[index]++;
+            if(key === 'Diabetes_012'){
+                if(csvValue === 2.0){
+                    console.log(csvValue);
+                    matchingRowsCount++;
+                }
+                
+            }
+          }
+        } else {
+          // Check if the user-entered value is within 5 of the CSV value
+          if (Math.abs(userValue - csvValue) <= 5) {
+            // Increment the count for the current column
+            columnCounts[index]++;
+          }
         }
-      } else {
-        // Check if the user-entered value is within 5 of the CSV value
-        if (Math.abs(userValue - csvValue) <= 5) {
-          // Increment the count for the current column
-          columnCounts[index]++;
-        }
-      }
+
+      });
+
     });
-  });
   
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
-
-  // Format the output
-  const formattedOutput = Object.keys(parsedData[0])
-    .map((key, index) => `${key}: ${percentages[index].toFixed(2)}%`)
-    .join('\n');
-
-  return formattedOutput;
-}
+    const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
+  
+    // Format the output
+    formattedOutput = Object.keys(parsedData[0])
+      .map((key, index) => `${key}: ${percentages[index].toFixed(2)}%`)
+      .join('\n');
+  
+    // Add information about matching rows with diabetes_012 equal to 2.0
+    formattedOutput += `\nMatching Rows with diabetes_012 === 2.0: ${matchingRowsPercentage.toFixed(2)}`;
+  
+    return formattedOutput;
+  }
