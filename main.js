@@ -113,6 +113,9 @@ function parseCSV(csvData) {
                 //console.log(key)
             }
         }
+
+        if(matchingValue){
+          console.log(key, csvValue, x, y ,z);
         if(key === 'Type012' && csvValue === 2.0){
             if(firstLoop){
               x += 1;
@@ -123,10 +126,11 @@ function parseCSV(csvData) {
               secLoop = false;
             } 
             z += 1;
-            console.log(key, userValue, csvValue, x, y ,z);
+            
             matchingRowsCount++; 
             //console.log(key);
             matchingValue = false;
+        }
         }
         });
       });
