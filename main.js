@@ -1,6 +1,7 @@
-const { DataFrame } = require('dataframe-js');
-
-
+let dfd;
+if (typeof dfd === 'undefined') {
+  dfd = require('dataframe-js');
+}
 // Function to convert checkbox values to float
 function checkboxToFloat(value) {
   return value === 'on' ? 1.0 : 0.0;
