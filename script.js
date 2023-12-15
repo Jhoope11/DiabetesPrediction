@@ -27,7 +27,7 @@ function submitForm(event) {
     };
 
     // Load CSV file asynchronously
-    fetch('path/to/your/csvfile.csv') // Update with the actual path to your CSV file
+    fetch('Type12.csv') // Update with the actual path to your CSV file
         .then(response => response.text())
         .then(csvData => {
             // Parse CSV data
