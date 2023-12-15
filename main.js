@@ -149,6 +149,6 @@ function parseCSV(csvData) {
     })
     .join('\n');
     // Add information about matching rows with diabetes_012 equal to 2.0
-    formattedOutput += `\nMatching Rows with diabetes_012 === 2.0: ${matchingRowsPercentage.toFixed(2)}`;
+    formattedOutput += `\nPercentage of similarity with the same entries that had type 2 Diabetes: ${matchingRowsPercentage.toFixed(2)}`;
     return formattedOutput;
   }
