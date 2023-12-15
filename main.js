@@ -93,8 +93,7 @@ function parseCSV(csvData) {
         if (key === 'HighBP' || key === 'HighChol' || key === 'Smoker' || key === 'Stroke' || key === 'HeartDiseaseorAttack' || key === 'PhysActivity' || key === 'Fruits' || key === 'Veggies' || key === 'HvyAlchoholConsump' || key === 'AnyHealthcare' || key === 'GenHlth' || key === 'DiffWalk' || key === 'Sex' || key === 'Education' || key === 'Income') {
           // Check if the user-entered value is the same as the CSV value
           if (userValue === csvValue) {
-            console.log(key);
-            console.log(userValue, csvValue);
+            console.log(key, userValue, csvValue);
             // Increment the count for the current column
             columnCounts[index]++;
           }
