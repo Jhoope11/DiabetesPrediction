@@ -102,7 +102,7 @@ function parseCSV(csvData) {
                 // Increment the count for the current column
                 columnCounts[index]++;
                 matchingValue = true;
-                secLoop = true;
+                //secLoop = true;
                 }
         } else {
             // Check if the user-entered value is the same as the CSV value
@@ -111,11 +111,12 @@ function parseCSV(csvData) {
                 // Increment the count for the current column
                 columnCounts[index]++;
                 matchingValue = true;
-                firstLoop = true;
-                //console.log(key)
+                //firstLoop = true;
             }
         }
         if(matchingValue){
+            console.log(matchingValue);
+            /*
             if(firstLoop){
                 x += 1;
                 firstLoop = false;
@@ -124,17 +125,19 @@ function parseCSV(csvData) {
                 y += 1;
                 secLoop = false;
             } 
-            key = 'Diabetes_012'
+            */
+            key = 'Diabetes_012';
             if(csvValue === 2.0){
                 console.log(key, userValue, csvValue, x, y ,z);
                 matchingRowsCount++;
-                z += 1;
+                //z += 1;
             }  
             matchingValue = false;
+            console.log(matchingValue);
         }
         });
     });
-  console.log(x,y,z);
+    //console.log(x,y,z);
     // Calculate the percentage
     const percentages = columnCounts.map(count => (count / parsedData.length) * 100);
     const matchingRowsPercentage = (matchingRowsCount / parsedData.length) * 100;
