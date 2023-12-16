@@ -1,35 +1,29 @@
 from flask import Flask, render_template
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
-# Load CSV file into a dictionary for quick lookup
-csv_data = {}
+# Load CSV file into a list of dictionaries for quick lookup
+csv_data = []
 with open('Type12.csv', 'r') as csv_file:
+    # Read headers from the first row
     headers = csv_file.readline().strip().split(',')
+
+    # Iterate through the remaining lines
     for line in csv_file:
         values = line.strip().split(',')
-        key = values[0]  # Assuming the first column is the key
-        csv_data[key] = {header: value for header, value in zip(headers, values)}
 
+        # Create a dictionary using headers as keys and values as values
+        data_row = {header: value for header, value in zip(headers, values)}
 
-@app.route('/', methods=['GET'])
-def index():
-    # Use the first row as the form values
-    first_row_key = list(csv_data.keys())[0]
-    form_values = csv_data[first_row_key].copy()
+        # Add the data row to the csv_data list
+        csv_data.append(data_row)
 
-    # Convert checkbox values to 1 or 0
-    convert_checkbox_values(form_values)
-
-    # Check if the values are in the CSV file
-    result = check_values_in_csv(static_values)
-    
-    return render_template('result.html', result=result)
-
+# Convert checkbox values to 1 or 0
 def convert_checkbox_values(form_values):
     checkbox_fields = [
-        'HighBP', 'HighChol', 'CholCheck', 'Smoker', 'Stroke', 
-        'HeartDiseaseorAttack', 'PhysActivity', 'Fruits', 'Veggies', 'HvyAlcoholConsump', 
+        'HighBP', 'HighChol', 'CholCheck', 'Smoker', 'Stroke',
+        'HeartDiseaseorAttack', 'PhysActivity', 'Fruits', 'Veggies', 'HvyAlcoholConsump',
         'AnyHealthcare', 'NoDocbcCost', 'DiffWalk'
     ]
 
@@ -42,36 +36,46 @@ def convert_checkbox_values(form_values):
     for field in text_fields:
         if field in form_values and not form_values[field].strip():
             form_values[field] = 0
-            
+
+# Check if the static values are in the CSV file
 def check_values_in_csv(static_values):
     result = {}
+    total_rows = len(csv_data[1:])
+    
+    # Initialize lists for scatter plot
+    x_values = []
+    y_values = []
 
-    # Get the keys from the second row of the CSV file (assuming it contains the type information)
-    csv_keys = list(csv_data.keys())
-    csv_values = list(csv_data.values())[1]  # Assuming the second row contains the example values
+    # Iterate through each header
+    for header in headers:
+        # Compare the form value with the column values for each row
+        match_count = sum(1 for data_row in csv_data[1:] if str(static_values[header]) == data_row[header])
 
-    for key, value in static_values.items():
-        if key in csv_data:
-            # Get the corresponding row values based on the key
-            row_values = csv_data[key]
+        # Calculate percentage
+        percentage = (match_count / total_rows) * 100 if total_rows > 0 else 0
 
-            # Print the comparison details
-            print(f"Key: {key}, Form value: {value}, CSV values: {row_values[1:]}")
+        # Store the match count and percentage for the header
+        result[header] = {'match_count': match_count, 'percentage': percentage}
 
-            # Compare the form value with the CSV values
-            match_count = sum(1 for v, csv_value in zip(row_values[1:], csv_values[1:]) if str(value) == csv_value)  # Skip the first column (key) in CSV data
-            
-            # Print the match count
-            print(f"Match count for {key}: {match_count}")
+        # Append values for scatter plot
+        x_values.append(header)
+        y_values.append(percentage)
 
-            result[key] = match_count
-        else:
-            result[key] = 0  # Default value if key is not found in CSV
+    # Create a scatter plot
+    create_scatter_plot(x_values, y_values)
 
     return result
 
+def create_scatter_plot(x_values, y_values):
+    plt.scatter(x_values, y_values)
+    plt.xlabel('Column')
+    plt.ylabel('Percentage of Matches')
+    plt.title('Proximity of Static Values to CSV Data')
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
 
-# Assuming csv_data is defined and available in the scope
+# Sample static values
 static_values = {
     'Type012': 0,
     'HighBP': 0,
@@ -95,9 +99,20 @@ static_values = {
     'Age': 11,
     'Education': 4.0,
     'Money': 5.0
-    # Add more key-value pairs for the remaining columns if needed
 }
 
+@app.route('/', methods=['GET'])
+def index():
+    # Use the first row as the form values
+    form_values = csv_data[0].copy()
+
+    # Convert checkbox values to 1 or 0
+    convert_checkbox_values(form_values)
+
+    # Check if the values are in the CSV file
+    result = check_values_in_csv(static_values)
+
+    return render_template('result.html', result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)
