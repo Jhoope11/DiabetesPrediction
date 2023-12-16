@@ -11,6 +11,14 @@
         {% for key, count in result.items() %}
             <li>{{ key }}: {{ count }} matches</li>
         {% endfor %}
+        <!-- Display the scatter plot -->
+
+
+
     </ul>
+    <div class="scatter-plot">
+        <img src="data:image/png;base64,{{ result['scatter_plot'] }}" alt="Scatter Plot">
+
+    </div>
 </body>
 </html>
