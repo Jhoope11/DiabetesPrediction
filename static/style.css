@@ -58,3 +58,26 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
   
+/* Result section styles */
+
+#result {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 5px solid #0bab00; /* Blue thick border */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.result-heading {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.result-item {
+    margin-bottom: 10px;
+}
+
+/* Add more styles as needed for specific elements in the result section */

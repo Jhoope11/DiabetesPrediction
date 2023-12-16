@@ -8,19 +8,19 @@
     <title>CSV Checker Result</title>
 </head>
 <body>
+    <div id="result">
     <h2>Results:</h2>
     <ul>
         {% for key, count in result.items() %}
-            <li>{{ key }}: {{ count }} matches</li>
+            {% if key != 'scatter_plot' %}
+                <li>{{ key }}: {{ count['match_count'] }} matches, which is {{count['percentage']}}%</li>
+            {% endif %}
         {% endfor %}
-        <!-- Display the scatter plot -->
-
-
-
     </ul>
     <div class="scatter-plot">
         <img src="data:image/png;base64,{{ result['scatter_plot'] }}" alt="Scatter Plot">
 
     </div>
+</div>
 </body>
 </html>
