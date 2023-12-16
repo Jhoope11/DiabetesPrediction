@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>CSV Checker Result</title>
+</head>
+<body>
+    <div id="result">
+    <h2>Results:</h2>
+    <ul>
+        {% for key, count in result.items() %}
+            {% if key != 'scatterPlot' %}
+                <li>{{ key }}: {{ count['matchCount'] }} matches, which is {{count['percentage']}}%</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <div class="scatterPlot">
+        <img src="data:image/png;base64,{{ result['scatterPlot'] }}" alt="Scatter Plot">
+
+    </div>
+</div>
+</body>
+</html>
