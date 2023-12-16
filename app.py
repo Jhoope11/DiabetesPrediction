@@ -45,6 +45,17 @@ def convertCheckboxValues(formValues):
             except (ValueError, TypeError):
                 # Handles the case where casting to float is not possible
                 formValues[field] = 0.0
+    textFieldsInt = ['Sex', 'Age']
+    for field in textFieldsInt:
+        if field in formValues and not formValues[field]:
+            formValues[field] = 0
+        else:
+            try:
+                # Tries to cast the field value to int
+                formValues[field] = int(formValues[field])
+            except (ValueError, TypeError):
+                # Handles the case where casting to int is not possible
+                formValues[field] = 0
     print(formValues)
     return formValues
 
