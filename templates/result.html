@@ -13,7 +13,12 @@
     <ul>
         {% for key, count in result.items() %}
             {% if key != 'scatterPlot' %}
+            {% if key != 'overallPercentage' %}
                 <li>{{ key }}: {{ count['matchCount'] }} matches, which is {{count['percentage']}}%</li>
+            {% endif %}
+            {% endif %}
+            {% if key == 'overallPercentage' %}
+            <li>Overall Similarity is: {{result['overallPercentage']}}%</li>
             {% endif %}
         {% endfor %}
     </ul>

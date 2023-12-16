@@ -65,11 +65,18 @@ def checkValuesInCsv(enteredValues):
         result[header] = {'matchCount': matchCount, 'percentage': percentage}
         xValues.append(header)
         yValues.append(percentage)
-        
+
+    # Check if the overall percentage exceeds 80%
+    overallPercentage = sum(yValues) / len(yValues) if len(yValues) > 0 else 0
+    print(overallPercentage)
+    result['overallPercentage'] = overallPercentage
+
     scatterPlot = createScatterPlot(xValues, yValues)
     scatterPlotBase64 = base64.b64encode(scatterPlot).decode('utf-8')
     result['scatterPlot'] = scatterPlotBase64
+
     return result
+
 
 def createScatterPlot(xValues, yValues):
     plt.scatter(xValues, yValues, color='blue', label='User Entered Values')
