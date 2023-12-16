@@ -20,22 +20,36 @@ with open('Type12.csv', 'r') as csvFile:
 
 # Converts and handles inputted values
 def convertCheckboxValues(formValues):
-    checkboxFields = [
-        'HighBP', 'HighChol', 'CholCheck', 'Smoker', 'Stroke',
-        'HeartDiseaseorAttack', 'PhysActivity', 'Fruits', 'Veggies', 'HvyAlcoholConsump',
-        'AnyHealthcare', 'NoDocbcCost', 'DiffWalk'
+    checkboxFieldsFloats = [
+        'HighChol',  'Smoker', 'Stroke',
+        'HeartDiseaseorAttack', 'NoDocbcCost', 'DiffWalk'
     ]
-    for field in checkboxFields:
-        # Check if the checkbox is present in form data
+    checkboxFieldsInts = ['HighBP', 'CholCheck', 'PhysActivity', 'Fruits', 'Veggies', 'HvyAlcoholConsump',
+        'AnyHealthcare'
+    ]
+    for field in checkboxFieldsFloats:
+        # Checks if the checkbox is present in form data
+        formValues[field] = 1.0 if field in formValues and formValues[field] == 'on' else 0.0
+    for field in checkboxFieldsInts:
+        # Checks if the checkbox is present in form data
         formValues[field] = 1 if field in formValues and formValues[field] == 'on' else 0
-    # Handle empty values in text boxes and replace with 0
-    textFields = ['BMI', 'GenHlth', 'MentHlth', 'PhysHlth', 'Sex', 'Age', 'EduLevel', 'Money', 'Type012']
+    # Handles empty values in text boxes and replace with 0
+    textFields = ['BMI', 'GenHlth', 'MentHlth', 'PhysHlth', 'Sex', 'Age', 'Education', 'Money', 'Type012']
     for field in textFields:
         if field in formValues and not formValues[field].strip():
-            formValues[field] = 0
+            formValues[field] = 0.0
+        else:
+            try:
+                # Tries to cast the field value to float
+                formValues[field] = float(formValues[field])
+            except (ValueError, TypeError):
+                # Handles the case where casting to float is not possible
+                formValues[field] = 0.0
+    print(formValues)
+    return formValues
 
-# Check if the static values are in the CSV file
-def checkValuesInCsv(staticValues):
+# Check if the entered values are in the CSV file
+def checkValuesInCsv(enteredValues):
     result = {}
     totalRows = len(csvData[1:])
     # Initialize lists for scatter plot
@@ -44,7 +58,7 @@ def checkValuesInCsv(staticValues):
     # Iterate through each header
     for header in headers:
         # Compare the form value with the column values for each row
-        matchCount = sum(1 for dataRow in csvData[1:] if str(staticValues[header]) == dataRow[header])
+        matchCount = sum(1 for dataRow in csvData[1:] if str(enteredValues[header]) == dataRow[header])
         # Calculate percentage
         percentage = (matchCount / totalRows) * 100 if totalRows > 0 else 0
         # Store the match count and percentage for the header
@@ -62,7 +76,7 @@ def createScatterPlot(xValues, yValues):
 
     plt.xlabel('Column')
     plt.ylabel('Percentage of Matches')
-    plt.title('Proximity of Static Values to CSV Data')
+    plt.title('Proximity of entered Values to CSV Data')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
     buffer = io.BytesIO()
